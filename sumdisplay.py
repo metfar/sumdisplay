@@ -26,6 +26,7 @@
 """sumdisp: visual comfort and XRandR display profiles (first usable edition)."""
 
 import argparse;
+from sumui.cli import SumArgumentParser;
 import json;
 import os;
 import pathlib;
@@ -37,7 +38,7 @@ import sys;
 import threading;
 import time;
 
-VERSION = "0.1a19";
+VERSION = "0.1a20";
 APP = pathlib.Path(sys.argv[0]).name;
 CONFIG_DIR = pathlib.Path(os.environ.get("XDG_CONFIG_HOME", "~/.config")).expanduser() / "sumdisp";
 CONFIG_FILE = CONFIG_DIR / "config.json";
@@ -1169,7 +1170,7 @@ def graphical(output_name=None):
 
 
 def main():
-    parser = argparse.ArgumentParser(prog=APP, description="sumdisp: X11 logical resolution, gamma, brightness and profiles");
+    parser = SumArgumentParser(prog=APP, description="sumdisp: X11 logical resolution, gamma, brightness and profiles");
     parser.add_argument("--language", "--lang", choices=LANGUAGES, default="en", dest="language", help="UI language: en (default), fr, es");
     parser.add_argument("--output", help="display output, e.g. HDMI-2");
     interface = parser.add_mutually_exclusive_group();

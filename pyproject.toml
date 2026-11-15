@@ -4,11 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sumdisplay"
-version = "0.1a19"
+version = "0.1a20"
 description = "SUM X11 logical display scaling, brightness, gamma and profiles"
 readme = "README.md"
 requires-python = ">=3.9"
 license = "GPL-2.0-or-later"
+dependencies = ["sumui>=0.1.0a21"]
 authors = [{name = "William Martinez Bas"}]
 classifiers = [
   "Programming Language :: Python :: 3",
