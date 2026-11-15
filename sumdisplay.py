@@ -27,6 +27,7 @@
 
 import argparse;
 from sumui.cli import SumArgumentParser;
+from sumui.theme_preferences import ThemePreferences;
 import json;
 import os;
 import pathlib;
@@ -38,7 +39,7 @@ import sys;
 import threading;
 import time;
 
-VERSION = "0.1a20";
+VERSION = "0.1a21";
 APP = pathlib.Path(sys.argv[0]).name;
 CONFIG_DIR = pathlib.Path(os.environ.get("XDG_CONFIG_HOME", "~/.config")).expanduser() / "sumdisp";
 CONFIG_FILE = CONFIG_DIR / "config.json";
@@ -631,7 +632,7 @@ def menu(output_name=None):
     choices = scale_options(output, old);
     with controlling_terminal() as terminal:
         reader, writer = terminal;
-        app = Application("sumdisp", theme="ZX", console=Console(file=writer, force_terminal=True), mouse=True);
+        app = Application("sumdisp", theme=ThemePreferences("sumdisp").get_theme(), console=Console(file=writer, force_terminal=True), mouse=True);
         def tui_scale_entries(active):
             if active:
                 return [(scale_label(v), scale_label(v)) for v in scale_options(output, {"scale": active_scale()}, catalog=True)];
@@ -904,7 +905,7 @@ def graphical(output_name=None):
     choices = gui_recent(old.get("scale", "1x1"));
     selected = {"scale": old.get("scale", "1x1")};
     controls = {};
-    ui.window(title="sumdisp {} - {}".format(VERSION, output["name"]), width=720, height=690, font_size=19, theme="ZX");
+    ui.window(title="sumdisp {} - {}".format(VERSION, output["name"]), width=720, height=690, font_size=19, theme=ThemePreferences("sumdisp").get_theme());
     physical_label = ui.label("{} | {} {} ({})".format(output["name"], T("Physical mode"), output.get("mode") or "?", T("read-only")), 22, 14, 665, 38, font_size=17);
     if len(active_outputs) > 1:
         physical_label.text = "{}: {} ({})".format(T("Physical mode"), output.get("mode") or "?", T("read-only"));
@@ -1170,7 +1171,7 @@ def graphical(output_name=None):
 
 
 def main():
-    parser = SumArgumentParser(prog=APP, description="sumdisp: X11 logical resolution, gamma, brightness and profiles");
+    parser = SumArgumentParser(prog=APP, description="sumdisp: X11 logical resolution, gamma, brightness and profiles", theme_provider=ThemePreferences("sumdisp"));
     parser.add_argument("--language", "--lang", choices=LANGUAGES, default="en", dest="language", help="UI language: en (default), fr, es");
     parser.add_argument("--output", help="display output, e.g. HDMI-2");
     interface = parser.add_mutually_exclusive_group();
