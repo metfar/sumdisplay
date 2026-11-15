@@ -1,0 +1,2 @@
+#!/bin/bash
+xrandr --output eDP-1-1  --gamma .8:.85:.95 --brightness $1
